@@ -161,9 +161,23 @@
                                             <constraint firstItem="ddR-S7-QyV" firstAttribute="top" secondItem="omn-xD-IaT" secondAttribute="top" id="pC7-78-avs"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="rO9-n6-3aN" userLabel="Button Stack View">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="rO9-n6-3aN" userLabel="Button Stack View">
                                         <rect key="frame" x="30" y="277" width="283" height="256.5"/>
                                         <subviews>
+                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2uj-Ao-SIm" userLabel="badgeStackView">
+                                                <rect key="frame" x="0.0" y="-359" width="283" height="10"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rXS-BG-hCl">
+                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="0.0"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ls1-Bl-5EY">
+                                                        <rect key="frame" x="0.0" y="10" width="283" height="0.0"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wHH-kB-UAe">
                                                 <rect key="frame" x="0.0" y="0.0" width="283" height="256.5"/>
                                                 <color key="backgroundColor" red="0.0" green="0.57344603540000005" blue="0.27058163289999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -205,6 +219,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="badgeImageView" destination="rXS-BG-hCl" id="G9p-47-lU3"/>
+                        <outlet property="badgeInfoLabel" destination="ls1-Bl-5EY" id="SGx-TM-YBo"/>
+                        <outlet property="badgeStackView" destination="2uj-Ao-SIm" id="h0I-qh-v8I"/>
                         <outlet property="dataStackView" destination="sP3-YI-w8v" id="Eb8-4V-YAC"/>
                         <outlet property="distanceLabel" destination="Gp7-dS-cbT" id="S8x-2t-Gc6"/>
                         <outlet property="launchPromptStackView" destination="TEI-Oa-26B" id="Ir8-bm-Xdv"/>
@@ -281,19 +298,54 @@
                                     <constraint firstItem="7Cn-sX-uPM" firstAttribute="width" secondItem="eQq-kW-TKO" secondAttribute="width" id="c9o-Xu-tLe"/>
                                 </constraints>
                             </stackView>
+                            <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yuB-gG-lWJ">
+                                <rect key="frame" x="0.0" y="64" width="375" height="334"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sis-cH-dyD">
+                                <rect key="frame" x="307" y="331" width="60" height="59"/>
+                                <state key="normal" image="info"/>
+                                <connections>
+                                    <action selector="infoButtonTapped" destination="edy-es-7gn" eventType="touchUpInside" id="BVZ-5I-tjf"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hDQ-n9-tpj">
+                                <rect key="frame" x="302" y="628" width="51" height="31"/>
+                                <connections>
+                                    <action selector="displayModeToggled:" destination="edy-es-7gn" eventType="valueChanged" id="DcW-2Q-bQQ"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPACE MODE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIq-gZ-wik">
+                                <rect key="frame" x="188.5" y="633.5" width="105.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="yuB-gG-lWJ" firstAttribute="trailing" secondItem="jNH-dz-PwR" secondAttribute="trailing" id="25W-qA-fHO"/>
                             <constraint firstItem="eQq-kW-TKO" firstAttribute="leading" secondItem="02b-8x-I0v" secondAttribute="leadingMargin" id="57q-Fr-gcB"/>
+                            <constraint firstItem="hDQ-n9-tpj" firstAttribute="centerY" secondItem="OIq-gZ-wik" secondAttribute="centerY" id="EfC-lG-6pG"/>
+                            <constraint firstItem="yuB-gG-lWJ" firstAttribute="bottom" secondItem="jNH-dz-PwR" secondAttribute="bottom" id="Ekf-Sj-77S"/>
+                            <constraint firstItem="Sis-cH-dyD" firstAttribute="bottom" secondItem="yuB-gG-lWJ" secondAttribute="bottom" constant="-8" id="FfA-RS-Im9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hDQ-n9-tpj" secondAttribute="trailing" constant="8" id="FpJ-HM-xbH"/>
                             <constraint firstAttribute="trailing" secondItem="jNH-dz-PwR" secondAttribute="trailing" id="LhV-yf-wh4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eQq-kW-TKO" secondAttribute="trailing" id="MgU-zy-WpV"/>
                             <constraint firstItem="eQq-kW-TKO" firstAttribute="top" secondItem="jNH-dz-PwR" secondAttribute="bottom" constant="8" symbolic="YES" id="Rua-Nd-XA1"/>
+                            <constraint firstItem="Sis-cH-dyD" firstAttribute="trailing" secondItem="yuB-gG-lWJ" secondAttribute="trailing" constant="-8" id="ZH0-II-H0n"/>
+                            <constraint firstItem="yuB-gG-lWJ" firstAttribute="top" secondItem="jNH-dz-PwR" secondAttribute="top" id="ZPh-pk-Hyk"/>
+                            <constraint firstItem="DiD-yF-DJb" firstAttribute="top" secondItem="hDQ-n9-tpj" secondAttribute="bottom" constant="8" id="jeu-vx-YXk"/>
                             <constraint firstItem="jNH-dz-PwR" firstAttribute="leading" secondItem="02b-8x-I0v" secondAttribute="leading" id="jpg-eN-Nku"/>
                             <constraint firstItem="jNH-dz-PwR" firstAttribute="top" secondItem="8HS-KC-Bpd" secondAttribute="bottom" id="ops-fp-is0"/>
+                            <constraint firstItem="hDQ-n9-tpj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eQq-kW-TKO" secondAttribute="bottom" constant="8" id="pwn-ET-nYU"/>
                             <constraint firstItem="jNH-dz-PwR" firstAttribute="height" secondItem="02b-8x-I0v" secondAttribute="height" multiplier="0.5" id="sXb-2W-F6h"/>
+                            <constraint firstItem="yuB-gG-lWJ" firstAttribute="leading" secondItem="jNH-dz-PwR" secondAttribute="leading" id="xBq-B7-3zG"/>
+                            <constraint firstItem="hDQ-n9-tpj" firstAttribute="leading" secondItem="OIq-gZ-wik" secondAttribute="trailing" constant="8" id="z4J-xP-MWQ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="badgeImageView" destination="yuB-gG-lWJ" id="lII-us-LSY"/>
+                        <outlet property="badgeInfoButton" destination="Sis-cH-dyD" id="Wu5-Or-Xl6"/>
                         <outlet property="dateLabel" destination="sAJ-v7-yGx" id="aTy-VQ-igK"/>
                         <outlet property="distanceLabel" destination="f8d-ls-rzA" id="tZJ-GU-F3O"/>
                         <outlet property="mapView" destination="jNH-dz-PwR" id="tCV-22-IMQ"/>
@@ -327,7 +379,7 @@
         <scene sceneID="b6u-Ik-3jv">
             <objects>
                 <tableViewController id="Wzu-UG-5UF" customClass="BadgesTableViewController" customModule="MoonRunner" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="bH7-8r-feb">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="bH7-8r-feb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -388,6 +440,11 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
+                                    <outlet property="badgeImageView" destination="ren-EC-8eR" id="Hsn-a1-z2m"/>
+                                    <outlet property="earnedLabel" destination="spz-p7-oCx" id="Nvn-7d-vmI"/>
+                                    <outlet property="goldImageView" destination="u7T-m2-rAZ" id="Jk6-7g-8dM"/>
+                                    <outlet property="nameLabel" destination="Njh-hg-K98" id="vVz-YG-psa"/>
+                                    <outlet property="silverImageView" destination="JW3-Ma-3Vw" id="ofT-Ce-IYq"/>
                                     <segue destination="kzC-Iv-qkX" kind="show" identifier="BadgeDetailsViewController" id="7Nj-ex-Lec"/>
                                 </connections>
                             </tableViewCell>
@@ -451,13 +508,13 @@
                                         <rect key="frame" x="0.0" y="179" width="343" height="52"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silver" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N65-Vf-BK2" userLabel="silverLabel">
-                                                <rect key="frame" x="0.0" y="0.0" width="292" height="52"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="291.5" height="52"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="spaceship-silver" translatesAutoresizingMaskIntoConstraints="NO" id="L6Y-kp-Wcq" userLabel="silverImageView">
-                                                <rect key="frame" x="292" y="0.0" width="51" height="52"/>
+                                                <rect key="frame" x="291.5" y="0.0" width="51.5" height="52"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="L6Y-kp-Wcq" secondAttribute="height" multiplier="1:1" id="k5t-aj-lCc"/>
                                                 </constraints>
@@ -486,6 +543,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="55c-cs-eVA" userLabel="info button">
                                 <rect key="frame" x="307" y="247" width="60" height="59"/>
                                 <state key="normal" image="info"/>
+                                <connections>
+                                    <action selector="infoButtonTapped" destination="kzC-Iv-qkX" eventType="touchUpInside" id="NaS-OK-7GT"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -503,6 +563,17 @@
                             <constraint firstAttribute="trailing" secondItem="1oM-n5-rHD" secondAttribute="trailing" id="oUO-E4-MGr"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="badgeImageView" destination="1oM-n5-rHD" id="eSx-Ef-uxm"/>
+                        <outlet property="bestLabel" destination="6Zh-L6-vYO" id="7y7-ZI-kef"/>
+                        <outlet property="distanceLabel" destination="Uvw-yk-bne" id="A4G-PC-5cD"/>
+                        <outlet property="earnedLabel" destination="qfo-CV-ROz" id="Ftb-qR-FEI"/>
+                        <outlet property="goldImageView" destination="6R5-Iz-kVM" id="ixn-Kk-EHy"/>
+                        <outlet property="goldLabel" destination="3Sm-kd-jbj" id="fsO-eE-y7E"/>
+                        <outlet property="nameLabel" destination="Jud-dI-p1x" id="zLW-Jh-Vbw"/>
+                        <outlet property="silverImageView" destination="L6Y-kp-Wcq" id="Oa9-Z8-K2c"/>
+                        <outlet property="silverLabel" destination="N65-Vf-BK2" id="OVo-Ut-0lg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jsr-a6-33c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

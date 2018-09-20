@@ -38,7 +38,9 @@ class RunDetailsViewController: UIViewController {
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
   @IBOutlet weak var paceLabel: UILabel!
-  
+    @IBOutlet var badgeImageView: UIImageView!
+    @IBOutlet var badgeInfoButton: UIButton!
+    
   var run:Run!
   
   override func viewDidLoad() {
@@ -46,7 +48,25 @@ class RunDetailsViewController: UIViewController {
     configureView()
   }
   
-  private func configureView() {
+    @IBAction func displayModeToggled(_ sender: UISwitch) {
+        UIView.animate(withDuration: 0.2) {
+            self.badgeImageView.alpha = sender.isOn ? 1 : 0
+            self.badgeInfoButton.alpha = sender.isOn ? 1 : 0
+            self.mapView.alpha = sender.isOn ? 0 : 1
+        }
+    }
+    
+    @IBAction func infoButtonTapped() {
+        let badge = Badge.best(for: run.distance)
+        let alert = UIAlertController(title: badge.name,
+                                      message: badge.information,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    
+    private func configureView() {
     let distance = Measurement(value: run.distance, unit: UnitLength.meters)
     let seconds = Int(run.duration)
     let formattedDistance = FormatDisplay.distance(distance)
@@ -61,6 +81,9 @@ class RunDetailsViewController: UIViewController {
     timeLabel.text = "Time:  \(formattedTime)"
     paceLabel.text = "Pace:  \(formattedPace)"
     loadMap()
+    let badge = Badge.best(for: run.distance)
+    badgeImageView.image = UIImage(named: badge.imageName)
+
   }
 
   private func mapRegion() -> MKCoordinateRegion? {
@@ -145,6 +168,7 @@ class RunDetailsViewController: UIViewController {
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel))
         present(alert, animated: true)
+        mapView.addAnnotations(annotations())
         return
     }
     
@@ -183,6 +207,33 @@ class RunDetailsViewController: UIViewController {
     
     return UIColor(red: red, green: green, blue: blue, alpha: 1)
   }
+  
+  private func annotations() -> [BadgeAnnotation] {
+    var annotations: [BadgeAnnotation] = []
+    let badgesEarned = Badge.allBadges.filter { $0.distance < run.distance }
+    var badgeIterator = badgesEarned.makeIterator()
+    var nextBadge = badgeIterator.next()
+    let locations = run.locations?.array as! [Location]
+    var distance = 0.0
+    
+    for (first, second) in zip(locations, locations.dropFirst()) {
+      guard let badge = nextBadge else { break }
+      let start = CLLocation(latitude: first.latitude, longitude: first.longitude)
+      let end = CLLocation(latitude: second.latitude, longitude: second.longitude)
+      distance += end.distance(from: start)
+      if distance >= badge.distance {
+        let badgeAnnotation = BadgeAnnotation(imageName: badge.imageName)
+        badgeAnnotation.coordinate = end.coordinate
+        badgeAnnotation.title = badge.name
+        badgeAnnotation.subtitle = FormatDisplay.distance(badge.distance)
+        annotations.append(badgeAnnotation)
+        nextBadge = badgeIterator.next()
+      }
+    }
+    
+    return annotations
+  }
+
 
   
 }
@@ -196,5 +247,25 @@ extension RunDetailsViewController: MKMapViewDelegate {
     renderer.lineWidth = 3
     return renderer
   }
+  
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    guard let annotation = annotation as? BadgeAnnotation else { return nil }
+    let reuseID = "checkpoint"
+    var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
+    if annotationView == nil {
+      annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+      annotationView?.image = #imageLiteral(resourceName: "mapPin")
+      annotationView?.canShowCallout = true
+    }
+    annotationView?.annotation = annotation
+    
+    let badgeImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+    badgeImageView.image = UIImage(named: annotation.imageName)
+    badgeImageView.contentMode = .scaleAspectFit
+    annotationView?.leftCalloutAccessoryView = badgeImageView
+    
+    return annotationView
+  }
+
 }
 

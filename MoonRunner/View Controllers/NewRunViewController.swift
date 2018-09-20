@@ -31,6 +31,7 @@
 import UIKit
 import CoreLocation
 import MapKit
+import AVFoundation
 
 class NewRunViewController: UIViewController {
   
@@ -43,6 +44,10 @@ class NewRunViewController: UIViewController {
   @IBOutlet weak var paceLabel: UILabel!
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var mapContainerView: UIView!
+    @IBOutlet weak var badgeStackView: UIStackView!
+    @IBOutlet weak var badgeImageView: UIImageView!
+    @IBOutlet weak var badgeInfoLabel: UILabel!
+
     
   private var run:Run?
   private let locationManager = LocationManager.shared
@@ -50,6 +55,15 @@ class NewRunViewController: UIViewController {
   private var timer: Timer?
   private var distance = Measurement(value: 0, unit: UnitLength.meters)
   private var locationList: [CLLocation] = []
+  
+  private var upcomingBadge: Badge!
+  private let successSound: AVAudioPlayer = {
+    guard let successSound = NSDataAsset(name: "success") else {
+      return AVAudioPlayer()
+    }
+    return try! AVAudioPlayer(data: successSound.data)
+  }()
+
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,6 +78,7 @@ class NewRunViewController: UIViewController {
   
   func eachSecond() {
     seconds += 1
+    checkNextBadge()
     updateDisplay()
   }
   
@@ -77,6 +92,10 @@ class NewRunViewController: UIViewController {
     distanceLabel.text = "Distance:  \(formattedDistance)"
     timeLabel.text = "Time:  \(formattedTime)"
     paceLabel.text = "Pace:  \(formattedPace)"
+    let distanceRemaining = upcomingBadge.distance - distance.value
+    let formattedDistanceRemaining = FormatDisplay.distance(distanceRemaining)
+    badgeInfoLabel.text = "\(formattedDistanceRemaining) until \(upcomingBadge.name)"
+
   }
   
   private func startRun() {
@@ -89,6 +108,10 @@ class NewRunViewController: UIViewController {
     seconds = 0
     distance = Measurement(value: 0, unit: UnitLength.meters)
     locationList.removeAll()
+    badgeStackView.isHidden = false
+    upcomingBadge = Badge.next(for: 0)
+    badgeImageView.image = UIImage(named: upcomingBadge.imageName)
+
     updateDisplay()
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
       self.eachSecond()
@@ -97,6 +120,7 @@ class NewRunViewController: UIViewController {
   }
   
   private func stopRun() {
+    badgeStackView.isHidden = true
     mapContainerView.isHidden = true
     launchPromptStackView.isHidden = false
     dataStackView.isHidden = true
@@ -130,6 +154,17 @@ class NewRunViewController: UIViewController {
     
     run = newRun
   }
+  
+  private func checkNextBadge() {
+    let nextBadge = Badge.next(for: distance.value)
+    if upcomingBadge != nextBadge {
+      badgeImageView.image = UIImage(named: nextBadge.imageName)
+      upcomingBadge = nextBadge
+      successSound.play()
+      AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+    }
+  }
+
 
   
   @IBAction func startTapped() {
