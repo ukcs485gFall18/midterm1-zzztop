@@ -30,6 +30,8 @@
  */
 
 import Foundation
+
+//provides uniform way to display distance, time, pace, date
 struct FormatDisplay {
   static func distance(_ distance: Double) -> String {
     let distanceMeasurement = Measurement(value: distance, unit: UnitLength.meters)

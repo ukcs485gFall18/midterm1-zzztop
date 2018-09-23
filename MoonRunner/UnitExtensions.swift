@@ -29,7 +29,11 @@
  * THE SOFTWARE.
  */
 
+
+
 import Foundation
+
+//handles math of conversion
 class UnitConverterPace: UnitConverter {
   private let coefficient: Double
   
@@ -50,6 +54,9 @@ class UnitConverterPace: UnitConverter {
     return 1.0 / value
   }
 }
+
+//since runners use time per unit distance rather than speed, extend Unit speed
+//to support conversion
 extension UnitSpeed {
   class var secondsPerMeter: UnitSpeed {
     return UnitSpeed(symbol: "sec/m", converter: UnitConverterPace(coefficient: 1))

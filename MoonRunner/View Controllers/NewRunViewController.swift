@@ -48,13 +48,13 @@ class NewRunViewController: UIViewController {
     @IBOutlet weak var badgeImageView: UIImageView!
     @IBOutlet weak var badgeInfoLabel: UILabel!
 
-    
-  private var run:Run?
-  private let locationManager = LocationManager.shared
-  private var seconds = 0
-  private var timer: Timer?
-  private var distance = Measurement(value: 0, unit: UnitLength.meters)
-  private var locationList: [CLLocation] = []
+  
+  private var run:Run? //create Run instance 
+  private let locationManager = LocationManager.shared //object used to start/stop location services
+  private var seconds = 0 //tracks duration of run
+  private var timer: Timer? //fires each second to update UI
+  private var distance = Measurement(value: 0, unit: UnitLength.meters) //holds cumulative distance of the run
+  private var locationList: [CLLocation] = [] //holds all CLLocation objects collected during the run
   
   private var upcomingBadge: Badge!
   private let successSound: AVAudioPlayer = {
@@ -72,16 +72,19 @@ class NewRunViewController: UIViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+    //stop timer and location updates (battery consumer) when user navigates away from view
     timer?.invalidate()
     locationManager.stopUpdatingLocation()
   }
   
+  //called once per second by timer
   func eachSecond() {
     seconds += 1
     checkNextBadge()
     updateDisplay()
   }
   
+  //uses formatting ability from FormatDisplay.swift to update UI will details of current run
   private func updateDisplay() {
     let formattedDistance = FormatDisplay.distance(distance)
     let formattedTime = FormatDisplay.time(seconds)
@@ -105,6 +108,8 @@ class NewRunViewController: UIViewController {
     dataStackView.isHidden = false
     startButton.isHidden = true
     stopButton.isHidden = false
+    
+    //resets duration, distance, locations to 0 , starts timer when starting new run
     seconds = 0
     distance = Measurement(value: 0, unit: UnitLength.meters)
     locationList.removeAll()
@@ -116,7 +121,7 @@ class NewRunViewController: UIViewController {
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
       self.eachSecond()
     }
-    startLocationUpdates()
+    startLocationUpdates() //begins collection location updates
   }
   
   private func stopRun() {
@@ -126,28 +131,32 @@ class NewRunViewController: UIViewController {
     dataStackView.isHidden = true
     startButton.isHidden = false
     stopButton.isHidden = true
-    locationManager.stopUpdatingLocation()
+    locationManager.stopUpdatingLocation() //when user wants to end run, stop tracking location
   }
   
   private func startLocationUpdates() {
-    locationManager.delegate = self
-    locationManager.activityType = .fitness
-    locationManager.distanceFilter = 10
-    locationManager.startUpdatingLocation()
+    locationManager.delegate = self //make this class delegate for Core Location so we can receive and process location updates
+    locationManager.activityType = .fitness //helps device intelligently save power throughout run (ex:stopping to cross road)
+    locationManager.distanceFilter = 10 //since location readings can deviate from straight line, this reduces zig zagging and produces mreo accure line
+    locationManager.startUpdatingLocation() //tell Core Location to start getting location updates
   }
   
   private func saveRun() {
-    let newRun = Run(context: CoreDataStack.context)
+    let newRun = Run(context: CoreDataStack.context) //create new run object
+    
+    //initialize it with the desired run's recorded distance, duration, and date
     newRun.distance = distance.value
     newRun.duration = Int16(seconds)
     newRun.timestamp = Date()
     
+    //for each CLLocation recorded
     for location in locationList {
-      let locationObject = Location(context: CoreDataStack.context)
+      let locationObject = Location(context: CoreDataStack.context) //create location object
+      //save location data
       locationObject.timestamp = location.timestamp
       locationObject.latitude = location.coordinate.latitude
       locationObject.longitude = location.coordinate.longitude
-      newRun.addToLocations(locationObject)
+      newRun.addToLocations(locationObject) //add each location to Run using automatically generated (addToLocations)
     }
     
     CoreDataStack.saveContext()
@@ -171,6 +180,7 @@ class NewRunViewController: UIViewController {
     startRun()
   }
   
+  //when user taps stop button, give them optopn to save, discard, or continue run
   @IBAction func stopTapped() {
     let alertController = UIAlertController(title: "End run?",
                                             message: "Do you wish to end your run?",
@@ -178,7 +188,7 @@ class NewRunViewController: UIViewController {
     alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
     alertController.addAction(UIAlertAction(title: "Save", style: .default) { _ in
       self.stopRun()
-      self.saveRun()
+      self.saveRun() //save run details to core data
       self.performSegue(withIdentifier: .details, sender: nil)
     })
     alertController.addAction(UIAlertAction(title: "Discard", style: .destructive) { _ in
@@ -190,6 +200,8 @@ class NewRunViewController: UIViewController {
   }
   
 }
+
+//to avoid a stringly typed interface by using enum instead of string for segue id
 extension NewRunViewController: SegueHandlerType {
   enum SegueIdentifier: String {
     case details = "RunDetailsViewController"
@@ -203,17 +215,24 @@ extension NewRunViewController: SegueHandlerType {
     }
   }
 }
+
+//used to report location updates
+//called each time core location updates user location
+//provides array of CLLocation devices (locationList)
 extension NewRunViewController: CLLocationManagerDelegate {
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     for newLocation in locations {
       let howRecent = newLocation.timestamp.timeIntervalSinceNow
+      //if location isn't confident within 20 meters or not recent, keep out of data set
       guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
       
+      //if CLLocation is reliable, find distance between it and most recently saved point
+      //and add to cumulative distance of run
       if let lastLocation = locationList.last {
-        let delta = newLocation.distance(from: lastLocation)
-        distance = distance + Measurement(value: delta, unit: UnitLength.meters)
-        let coordinates = [lastLocation.coordinate, newLocation.coordinate]
+        let delta = newLocation.distance(from: lastLocation) //get distance between locations
+        distance = distance + Measurement(value: delta, unit: UnitLength.meters) //distance with units
+        let coordinates = [lastLocation.coordinate, newLocation.coordinate] //get location coordinates
         mapView.add(MKPolyline(coordinates: coordinates, count: 2))
         let region = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500, 500)
         mapView.setRegion(region, animated: true)
@@ -224,6 +243,7 @@ extension NewRunViewController: CLLocationManagerDelegate {
     }
   }
 }
+
 extension NewRunViewController: MKMapViewDelegate {
   func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
     guard let polyline = overlay as? MKPolyline else {

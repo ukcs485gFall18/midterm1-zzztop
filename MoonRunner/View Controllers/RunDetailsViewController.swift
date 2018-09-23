@@ -41,32 +41,32 @@ class RunDetailsViewController: UIViewController {
     @IBOutlet var badgeImageView: UIImageView!
     @IBOutlet var badgeInfoButton: UIButton!
     
-  var run:Run!
+  var run:Run! //create run instance
   
   override func viewDidLoad() {
     super.viewDidLoad()
     configureView()
   }
   
-    @IBAction func displayModeToggled(_ sender: UISwitch) {
-        UIView.animate(withDuration: 0.2) {
-            self.badgeImageView.alpha = sender.isOn ? 1 : 0
-            self.badgeInfoButton.alpha = sender.isOn ? 1 : 0
-            self.mapView.alpha = sender.isOn ? 0 : 1
-        }
-    }
-    
-    @IBAction func infoButtonTapped() {
-        let badge = Badge.best(for: run.distance)
-        let alert = UIAlertController(title: badge.name,
-                                      message: badge.information,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
-        present(alert, animated: true)
-    }
+  @IBAction func displayModeToggled(_ sender: UISwitch) {
+      UIView.animate(withDuration: 0.2) {
+          self.badgeImageView.alpha = sender.isOn ? 1 : 0
+          self.badgeInfoButton.alpha = sender.isOn ? 1 : 0
+          self.mapView.alpha = sender.isOn ? 0 : 1
+      }
+  }
+  
+  @IBAction func infoButtonTapped() {
+      let badge = Badge.best(for: run.distance)
+      let alert = UIAlertController(title: badge.name,
+                                    message: badge.information,
+                                    preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+      present(alert, animated: true)
+  }
 
-    
-    private func configureView() {
+//formats all of the details of run and sets them to display
+  private func configureView() {
     let distance = Measurement(value: run.distance, unit: UnitLength.meters)
     let seconds = Int(run.duration)
     let formattedDistance = FormatDisplay.distance(distance)
@@ -83,7 +83,6 @@ class RunDetailsViewController: UIViewController {
     loadMap()
     let badge = Badge.best(for: run.distance)
     badgeImageView.image = UIImage(named: badge.imageName)
-
   }
 
   private func mapRegion() -> MKCoordinateRegion? {
