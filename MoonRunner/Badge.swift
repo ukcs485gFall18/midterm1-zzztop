@@ -31,6 +31,8 @@
 
 import Foundation
 
+//defines properties of a badge
+//badges are given based on run distance
 struct Badge {
   let name: String
   let imageName: String
@@ -52,6 +54,8 @@ struct Badge {
     self.information = information
     self.distance = distance
   }
+  
+  //reads and parses badges.txt to extract the badges and their details
   static let allBadges: [Badge] = {
     guard let fileURL = Bundle.main.url(forResource: "badges", withExtension: "txt") else {
       fatalError("No badges.txt file found")
@@ -64,17 +68,18 @@ struct Badge {
       fatalError("Cannot decode badges.txt")
     }
   }()
+  
+  static func best(for distance: Double) -> Badge {
+    return allBadges.filter { $0.distance < distance }.last ?? allBadges.first!
+  }
+  
+  static func next(for distance: Double) -> Badge {
+    return allBadges.filter { distance < $0.distance }.first ?? allBadges.last!
+  }
+
 }
 
-static func best(for distance: Double) -> Badge {
-  return allBadges.filter { $0.distance < distance }.last ?? allBadges.first!
-}
-
-static func next(for distance: Double) -> Badge {
-  return allBadges.filter { distance < $0.distance }.first ?? allBadges.last!
-}
-
-
+//allows you to compare badges and match them
 extension Badge: Equatable {
   static func ==(lhs: Badge, rhs: Badge) -> Bool {
     return lhs.name == rhs.name

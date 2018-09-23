@@ -85,6 +85,8 @@ class RunDetailsViewController: UIViewController {
     badgeImageView.image = UIImage(named: badge.imageName)
   }
 
+  //get longitude and latitude of location and center map at that location
+  //so that map doesn't show entire world
   private func mapRegion() -> MKCoordinateRegion? {
     guard
       let locations = run.locations,
@@ -111,38 +113,39 @@ class RunDetailsViewController: UIViewController {
     let center = CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2,
                                         longitude: (minLong + maxLong) / 2)
     let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 1.3,
-                                longitudeDelta: (maxLong - minLong) * 1.3)
-    return MKCoordinateRegion(center: center, span: span)
+                                longitudeDelta: (maxLong - minLong) * 1.3) //span defined by vertical and horizontal range
+    return MKCoordinateRegion(center: center, span: span) //represents the dsiplay region for the map given a center and span
   }
   
+  //draws line that corresponds to your route with colors coresponding to your pace
   private func polyLine() -> [MulticolorPolyline] {
     
-    // 1
     let locations = run.locations?.array as! [Location]
     var coordinates: [(CLLocation, CLLocation)] = []
     var speeds: [Double] = []
     var minSpeed = Double.greatestFiniteMagnitude
     var maxSpeed = 0.0
     
-    // 2
+    //get endpoints (coordinate pairs) from CLLocation object
     for (first, second) in zip(locations, locations.dropFirst()) {
       let start = CLLocation(latitude: first.latitude, longitude: first.longitude)
       let end = CLLocation(latitude: second.latitude, longitude: second.longitude)
       coordinates.append((start, end))
       
-      //3
+      //calculates speeds for each segment (defined by 2 endpoints) and stores them in speeds
       let distance = end.distance(from: start)
       let time = second.timestamp!.timeIntervalSince(first.timestamp! as Date)
       let speed = time > 0 ? distance / time : 0
       speeds.append(speed)
-      minSpeed = min(minSpeed, speed)
-      maxSpeed = max(maxSpeed, speed)
+      minSpeed = min(minSpeed, speed) //gets minimum speed
+      maxSpeed = max(maxSpeed, speed) //gets maximum speed
     }
     
-    //4
+    //gets average speed of run
     let midSpeed = speeds.reduce(0, +) / Double(speeds.count)
     
-    //5
+    //use the endpoints of the CLLocations to form line segments (polylines)
+    //set the color of segment to correspond to speed of that segment relative to the speeds of other segments
     var segments: [MulticolorPolyline] = []
     for ((start, end), speed) in zip(coordinates, speeds) {
       let coords = [start.coordinate, end.coordinate]
@@ -156,6 +159,8 @@ class RunDetailsViewController: UIViewController {
     return segments
   }
 
+  //if no locations have been saved, show user error message
+  //else, set map region and add the overlay (line segments that show your route on the map)
   private func loadMap() {
     guard
       let locations = run.locations,
@@ -175,7 +180,9 @@ class RunDetailsViewController: UIViewController {
     mapView.addOverlays(polyLine())
   }
   
+  //manages the colors of the polyline segments
   private func segmentColor(speed: Double, midSpeed: Double, slowestSpeed: Double, fastestSpeed: Double) -> UIColor {
+    //define base colors to display
     enum BaseColors {
       static let r_red: CGFloat = 1
       static let r_green: CGFloat = 20 / 255
@@ -192,6 +199,8 @@ class RunDetailsViewController: UIViewController {
     
     let red, green, blue: CGFloat
     
+    //create a line color that is composed on red, yellow, and green segments that correspond
+    //to the speed of those segments in the route
     if speed < midSpeed {
       let ratio = CGFloat((speed - slowestSpeed) / (midSpeed - slowestSpeed))
       red = BaseColors.r_red + ratio * (BaseColors.y_red - BaseColors.r_red)
@@ -236,11 +245,16 @@ class RunDetailsViewController: UIViewController {
 
   
 }
+
+//MKPolyline is a collection of line segments
+//Each time MapKit wants to display an overlay, if the overlay is a polyline, use MKPolyline to visually represent/render line in app
 extension RunDetailsViewController: MKMapViewDelegate {
   func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
     guard let polyline = overlay as? MulticolorPolyline else {
       return MKOverlayRenderer(overlay: overlay)
     }
+    
+    //render polyline with correct colored segments that correspond to speed
     let renderer = MKPolylineRenderer(polyline: polyline)
     renderer.strokeColor = polyline.color
     renderer.lineWidth = 3

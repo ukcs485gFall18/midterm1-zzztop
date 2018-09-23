@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     UINavigationBar.appearance().tintColor = .white
     UINavigationBar.appearance().barTintColor = .black
     let locationManager = LocationManager.shared
-    locationManager.requestWhenInUseAuthorization() //request permission to use location information
+    locationManager.requestAlwaysAuthorization() //request permission to use location information
     return true
   }
   

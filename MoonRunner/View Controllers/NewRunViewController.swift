@@ -135,6 +135,7 @@ class NewRunViewController: UIViewController {
   }
   
   private func startLocationUpdates() {
+    locationManager.allowsBackgroundLocationUpdates = true;
     locationManager.delegate = self //make this class delegate for Core Location so we can receive and process location updates
     locationManager.activityType = .fitness //helps device intelligently save power throughout run (ex:stopping to cross road)
     locationManager.distanceFilter = 10 //since location readings can deviate from straight line, this reduces zig zagging and produces mreo accure line
@@ -244,11 +245,15 @@ extension NewRunViewController: CLLocationManagerDelegate {
   }
 }
 
+//renders line while you are running
+//allows you to see map and route while running, similar to extension from runDetailsViewController
 extension NewRunViewController: MKMapViewDelegate {
   func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
     guard let polyline = overlay as? MKPolyline else {
       return MKOverlayRenderer(overlay: overlay)
     }
+    
+    //line to show route you are taking is in blue while you are still running
     let renderer = MKPolylineRenderer(polyline: polyline)
     renderer.strokeColor = .blue
     renderer.lineWidth = 3

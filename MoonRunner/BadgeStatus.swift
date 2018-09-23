@@ -31,6 +31,8 @@
 
 import Foundation
 
+//structure to store badges when they are earned
+//will establish association between a run and a bage earned during the run
 struct BadgeStatus {
   let badge: Badge
   let earned: Run?
@@ -38,9 +40,14 @@ struct BadgeStatus {
   let gold: Run?
   let best: Run?
   
+  //defines the two upgarde versions of a badge
+  //you can upgrade the badge if you run the badge distance the specified multiplier \
+  //amount faster than the speed you ran when you first required badge
   static let silverMultiplier = 1.05
   static let goldMultiplier = 1.1
   
+  //compares badge speeds and awards runs silver/gold badges appropriately
+  //returns array of 
   static func badgesEarned(runs: [Run]) -> [BadgeStatus] {
     return Badge.allBadges.map { badge in
       var earned: Run?
@@ -64,6 +71,7 @@ struct BadgeStatus {
           gold = run
         }
         
+        //keeps track of the run with fastest speed achieved for each badge
         if let existingBest = best {
           let bestSpeed = existingBest.distance / Double(existingBest.duration)
           if runSpeed > bestSpeed {
