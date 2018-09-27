@@ -29,6 +29,7 @@
  * THE SOFTWARE.
  */
 
+//shows details of a badge
 import UIKit
 
 class BadgeDetailsViewController: UIViewController {
@@ -45,6 +46,10 @@ class BadgeDetailsViewController: UIViewController {
   
   var status: BadgeStatus!
   
+  //will show badge image, name, distance, date earned, best distance, pace, date?
+  //distance run to earn the badge??, duration of run that earned badge
+  //displays silver or gold if earned and the dates they were earned or the pace
+  //they need to run to achieve them
   override func viewDidLoad() {
     super.viewDidLoad()
     let badgeRotation = CGAffineTransform(rotationAngle: .pi / 8)
@@ -95,6 +100,7 @@ class BadgeDetailsViewController: UIViewController {
 
   }
   
+  //when info button tappend, show a pop up with badge name and information that was stored in the Badge struct
   @IBAction func infoButtonTapped() {
     let alert = UIAlertController(title: status.badge.name,
                                   message: status.badge.information,

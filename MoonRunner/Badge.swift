@@ -69,10 +69,12 @@ struct Badge {
     }
   }()
   
+  //gets most recently earned badge for a distance
   static func best(for distance: Double) -> Badge {
     return allBadges.filter { $0.distance < distance }.last ?? allBadges.first!
   }
   
+  //gets next badge to earn for a distance
   static func next(for distance: Double) -> Badge {
     return allBadges.filter { distance < $0.distance }.first ?? allBadges.last!
   }

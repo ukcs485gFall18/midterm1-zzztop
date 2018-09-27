@@ -57,6 +57,8 @@ class NewRunViewController: UIViewController {
   private var locationList: [CLLocation] = [] //holds all CLLocation objects collected during the run
   
   private var upcomingBadge: Badge!
+  
+  //create audio to be played when a new badge is earned
   private let successSound: AVAudioPlayer = {
     guard let successSound = NSDataAsset(name: "success") else {
       return AVAudioPlayer()
@@ -80,6 +82,7 @@ class NewRunViewController: UIViewController {
   //called once per second by timer
   func eachSecond() {
     seconds += 1
+    //every second, check if a badge has been achieved
     checkNextBadge()
     updateDisplay()
   }
@@ -95,6 +98,8 @@ class NewRunViewController: UIViewController {
     distanceLabel.text = "Distance:  \(formattedDistance)"
     timeLabel.text = "Time:  \(formattedTime)"
     paceLabel.text = "Pace:  \(formattedPace)"
+    
+    //get distance remaining until user earns next badge and displays this info to user
     let distanceRemaining = upcomingBadge.distance - distance.value
     let formattedDistanceRemaining = FormatDisplay.distance(distanceRemaining)
     badgeInfoLabel.text = "\(formattedDistanceRemaining) until \(upcomingBadge.name)"
@@ -113,6 +118,8 @@ class NewRunViewController: UIViewController {
     seconds = 0
     distance = Measurement(value: 0, unit: UnitLength.meters)
     locationList.removeAll()
+    
+    //shows initial badge to earn??
     badgeStackView.isHidden = false
     upcomingBadge = Badge.next(for: 0)
     badgeImageView.image = UIImage(named: upcomingBadge.imageName)
@@ -125,6 +132,7 @@ class NewRunViewController: UIViewController {
   }
   
   private func stopRun() {
+    //hide details between runs
     badgeStackView.isHidden = true
     mapContainerView.isHidden = true
     launchPromptStackView.isHidden = false
@@ -164,12 +172,13 @@ class NewRunViewController: UIViewController {
     
     run = newRun
   }
-  
+  //???
+  //detects when a badge has been achieved
   private func checkNextBadge() {
     let nextBadge = Badge.next(for: distance.value)
-    if upcomingBadge != nextBadge {
+    if upcomingBadge != nextBadge { //if the upcoming badge is not the next badge, next badge has been achieved
       badgeImageView.image = UIImage(named: nextBadge.imageName)
-      upcomingBadge = nextBadge
+      upcomingBadge = nextBadge //reset upcoming badge
       successSound.play()
       AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }

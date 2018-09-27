@@ -29,6 +29,8 @@
  * THE SOFTWARE.
  */
 
+
+//custom cell to display badges in a table view
 import UIKit
 
 class BadgeCell: UITableViewCell {
@@ -49,9 +51,13 @@ class BadgeCell: UITableViewCell {
   private let greenLabel = #colorLiteral(red: 0, green: 0.5725490196, blue: 0.3058823529, alpha: 1)
   private let badgeRotation = CGAffineTransform(rotationAngle: .pi / 8)
   
+  
+  //configure the cell based on a badge status
   private func configure() {
     silverImageView.isHidden = status.silver == nil
     goldImageView.isHidden = status.gold == nil
+    
+    //if a bagde has been earned, display its name in green, the date it was earned, and the badge image
     if let earned = status.earned {
       nameLabel.text = status.badge.name
       nameLabel.textColor = greenLabel
@@ -63,7 +69,7 @@ class BadgeCell: UITableViewCell {
       goldImageView.transform = badgeRotation
       isUserInteractionEnabled = true
       accessoryType = .disclosureIndicator
-    } else {
+    } else { //if badge hasn't been earned, display ???? in red and distance they need to run to earn it
       nameLabel.text = "?????"
       nameLabel.textColor = redLabel
       let formattedDistance = FormatDisplay.distance(status.badge.distance)

@@ -32,18 +32,20 @@
 import UIKit
 import CoreData
 
+//displays badges in a table
 class BadgesTableViewController: UITableViewController {
   
   var statusList: [BadgeStatus]!
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    //when view loads ask get saved runs from Core Data
     statusList = BadgeStatus.badgesEarned(runs: getRuns())
   }
   
   private func getRuns() -> [Run] {
-    let fetchRequest: NSFetchRequest<Run> = Run.fetchRequest()
-    let sortDescriptor = NSSortDescriptor(key: #keyPath(Run.timestamp), ascending: true)
+    let fetchRequest: NSFetchRequest<Run> = Run.fetchRequest() //make request to core data for saved runs
+    let sortDescriptor = NSSortDescriptor(key: #keyPath(Run.timestamp), ascending: true) //sort runs by data
     fetchRequest.sortDescriptors = [sortDescriptor]
     do {
       return try CoreDataStack.context.fetch(fetchRequest)
@@ -53,14 +55,15 @@ class BadgesTableViewController: UITableViewController {
   }
 }
 
+//redueces stringly typed code
 extension BadgesTableViewController {
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return statusList.count
+    return statusList.count //returns how many sections table should have
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: BadgeCell = tableView.dequeueReusableCell(for: indexPath)
-    cell.status = statusList[indexPath.row]
+    cell.status = statusList[indexPath.row] //set the status corresponding to badge at indexPath.row in table
     return cell
   }
 }
@@ -70,12 +73,13 @@ extension BadgesTableViewController: SegueHandlerType {
     case details = "BadgeDetailsViewController"
   }
   
+  //pass BadgeStatus to badgeDetailsVC when badge in BadgeTableVC is tapped
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .details:
       let destination = segue.destination as! BadgeDetailsViewController
       let indexPath = tableView.indexPathForSelectedRow!
-      destination.status = statusList[indexPath.row]
+      destination.status = statusList[indexPath.row] //gets badge status to pass
     }
   }
   
