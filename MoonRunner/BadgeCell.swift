@@ -33,26 +33,40 @@
 //custom cell to display badges in a table view
 import UIKit
 
+//--------------------------------------
+// Class: MulticolorPolyline
+// Purpose: to create a custom cell for
+// the table view (UI improvement)
+//--------------------------------------
 class BadgeCell: UITableViewCell {
   
+  //connecting and implementing all of the UI buttons
   @IBOutlet weak var badgeImageView: UIImageView!
   @IBOutlet weak var silverImageView: UIImageView!
   @IBOutlet weak var goldImageView: UIImageView!
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var earnedLabel: UILabel!
   
+  //ensures that all badges are properly configured
   var status: BadgeStatus! {
     didSet {
       configure()
     }
   }
   
+  //private member variables that determine the look of the badge labl
   private let redLabel = #colorLiteral(red: 1, green: 0.07843137255, blue: 0.1725490196, alpha: 1)
   private let greenLabel = #colorLiteral(red: 0, green: 0.5725490196, blue: 0.3058823529, alpha: 1)
   private let badgeRotation = CGAffineTransform(rotationAngle: .pi / 8)
   
-  
-  //configure the cell based on a badge status
+  //--------------------------------------------------------
+  // configure
+  //--------------------------------------------------------
+  // configure the cell based on a badge status
+  // Pre: none
+  // Post: returns nothing but sets the label attributes
+  // based on the badge earning status
+  //--------------------------------------------------------
   private func configure() {
     silverImageView.isHidden = status.silver == nil
     goldImageView.isHidden = status.gold == nil
