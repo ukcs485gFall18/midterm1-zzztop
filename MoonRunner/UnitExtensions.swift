@@ -87,14 +87,35 @@ class UnitConverterPace: UnitConverter {
 // conversion
 //--------------------------------------------------
 extension UnitSpeed { //extending the functionality of the original class
+  //--------------------------------------------------------
+  // secondsPerMeter
+  //--------------------------------------------------------
+  // Pre: none
+  // Post: returns the newly constructed object with the
+  // new unit symbol and converter for seconds per meter
+  //--------------------------------------------------------
   class var secondsPerMeter: UnitSpeed {
     return UnitSpeed(symbol: "sec/m", converter: UnitConverterPace(coefficient: 1))
   }
   
+  //--------------------------------------------------------
+  // minutesPerKilometer
+  //--------------------------------------------------------
+  // Pre: none
+  // Post: returns the newly constructed object with the
+  // new unit symbol and converter for minutes per kilometer
+  //--------------------------------------------------------
   class var minutesPerKilometer: UnitSpeed {
     return UnitSpeed(symbol: "min/km", converter: UnitConverterPace(coefficient: 60.0 / 1000.0))
   }
   
+  //--------------------------------------------------------
+  // minutesPerMile
+  //--------------------------------------------------------
+  // Pre: none
+  // Post: returns the newly constructed object with the
+  // new unit symbol and converter for minutes per mile
+  //--------------------------------------------------------
   class var minutesPerMile: UnitSpeed {
     return UnitSpeed(symbol: "min/mi", converter: UnitConverterPace(coefficient: 60.0 / 1609.34))
   }
