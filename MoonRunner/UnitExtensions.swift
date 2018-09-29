@@ -86,7 +86,7 @@ class UnitConverterPace: UnitConverter {
 // rather than speed, extend Unit speed to support
 // conversion
 //--------------------------------------------------
-extension UnitSpeed {
+extension UnitSpeed { //extending the functionality of the original class
   class var secondsPerMeter: UnitSpeed {
     return UnitSpeed(symbol: "sec/m", converter: UnitConverterPace(coefficient: 1))
   }
