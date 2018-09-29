@@ -29,34 +29,63 @@
  * THE SOFTWARE.
  */
 
-
-
+//-----------------------------
+// All imported resources
+//-----------------------------
 import Foundation
 
-//handles math of conversion
+//-------------------------------------------------
+// Class UnitConverterPace
+//-------------------------------------------------
+// Purpose: handles math of conversion from unit
+// to unit
+//-------------------------------------------------
 class UnitConverterPace: UnitConverter {
   private let coefficient: Double
   
+  //constructor for UnitConverterPace, holds coefficient
   init(coefficient: Double) {
     self.coefficient = coefficient
   }
-  
+  //--------------------------------------------------------
+  // baseUnitValue
+  //--------------------------------------------------------
+  // overrides the inherited baseUnitValue
+  // Pre: takes in a double
+  // Post: returns the reciprocal of value * coeff
+  //--------------------------------------------------------
   override func baseUnitValue(fromValue value: Double) -> Double {
     return reciprocal(value * coefficient)
   }
-  
+  //--------------------------------------------------------
+  // value
+  //--------------------------------------------------------
+  // overrides the inherited value function
+  // Pre: takes in a double
+  // Post: returns the reciprocal of value * coeff
+  //--------------------------------------------------------
   override func value(fromBaseUnitValue baseUnitValue: Double) -> Double {
     return reciprocal(baseUnitValue * coefficient)
   }
   
+  //--------------------------------------------------------
+  // reciprocal
+  //--------------------------------------------------------
+  // Pre: takes in a double
+  // Post: returns the reciprocal of that number as a double
+  //--------------------------------------------------------
   private func reciprocal(_ value: Double) -> Double {
     guard value != 0 else { return 0 }
     return 1.0 / value
   }
 }
-
-//since runners use time per unit distance rather than speed, extend Unit speed
-//to support conversion
+//--------------------------------------------------
+// Class UnitConverterPace
+//--------------------------------------------------
+// Purpose: since runners use time per unit distance
+// rather than speed, extend Unit speed to support
+// conversion
+//--------------------------------------------------
 extension UnitSpeed {
   class var secondsPerMeter: UnitSpeed {
     return UnitSpeed(symbol: "sec/m", converter: UnitConverterPace(coefficient: 1))
