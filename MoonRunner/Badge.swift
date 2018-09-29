@@ -42,6 +42,7 @@ struct Badge {
   let information: String
   let distance: Double
   
+  //unwrapping the strings in the dictionary
   init?(from dictionary: [String: String]) {
     guard
       let name = dictionary["name"],
@@ -52,6 +53,7 @@ struct Badge {
       else {
         return nil
     }
+    //setting the attributes of the struct
     self.name = name
     self.imageName = imageName
     self.information = information
@@ -63,7 +65,7 @@ struct Badge {
     guard let fileURL = Bundle.main.url(forResource: "badges", withExtension: "txt") else {
       fatalError("No badges.txt file found")
     }
-    do {
+    do {//parsing the txt file using JSON serialization
       let jsonData = try Data(contentsOf: fileURL, options: .mappedIfSafe)
       let jsonResult = try JSONSerialization.jsonObject(with: jsonData) as! [[String: String]]
       return jsonResult.flatMap(Badge.init)
@@ -72,12 +74,25 @@ struct Badge {
     }
   }()
   
-  //gets most recently earned badge for a distance
+  //--------------------------------------------------------
+  // best
+  //--------------------------------------------------------
+  // gets most recently earned badge for a distance
+  // returns the struct of newly formed badge attributes
+  // Pre: A double
+  // Post: a badge object
+  //--------------------------------------------------------
   static func best(for distance: Double) -> Badge {
     return allBadges.filter { $0.distance < distance }.last ?? allBadges.first!
   }
   
-  //gets next badge to earn for a distance
+  //--------------------------------------------------------
+  // next
+  //--------------------------------------------------------
+  // gets next badge to earn for a distance
+  // Pre: A double
+  // Post: a badge object
+  //-------------------------------------------------------
   static func next(for distance: Double) -> Badge {
     return allBadges.filter { distance < $0.distance }.first ?? allBadges.last!
   }
@@ -86,6 +101,11 @@ struct Badge {
 
 //allows you to compare badges and match them
 extension Badge: Equatable {
+  //--------------------------------------------------------
+  // ==
+  //--------------------------------------------------------
+  // overriding the equality relation
+  //-------------------------------------------------------
   static func ==(lhs: Badge, rhs: Badge) -> Bool {
     return lhs.name == rhs.name
   }
