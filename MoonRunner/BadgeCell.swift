@@ -31,6 +31,9 @@
 
 
 //custom cell to display badges in a table view
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 
 //--------------------------------------

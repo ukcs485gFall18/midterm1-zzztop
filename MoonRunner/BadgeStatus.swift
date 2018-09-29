@@ -29,11 +29,19 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import Foundation
 
-//structure to store badges when they are earned
-//will establish association between a run and a bage earned during the run
+//-----------------------------------------------
+// Struct BadgeStatus
+//-----------------------------------------------
+// structure to store badges when they are earned
+// will establish association between a run and a bage earned during the run
+//-----------------------------------------------
 struct BadgeStatus {
+  //badge status attributes
   let badge: Badge
   let earned: Run?
   let silver: Run?
@@ -46,27 +54,37 @@ struct BadgeStatus {
   static let silverMultiplier = 1.05
   static let goldMultiplier = 1.1
   
-  //compares badge speeds and awards runs silver/gold badges appropriately
-  //returns array of 
+  //--------------------------------------------------------
+  // badgesEarned
+  //--------------------------------------------------------
+  // compares badge speeds and awards runs silver/gold badges appropriately
+  // returns the struct of newly formed badge attributes
+  // Pre: An array of runs
+  // Post: returns an array of BadgeStatus
+  //--------------------------------------------------------
   static func badgesEarned(runs: [Run]) -> [BadgeStatus] {
     return Badge.allBadges.map { badge in
+      //optional variables
       var earned: Run?
       var silver: Run?
       var gold: Run?
       var best: Run?
       
+      //loops through the runs array and sees how many runs pass the badge distance requirements
       for run in runs where run.distance > badge.distance {
-        if earned == nil {
-          earned = run
+        if earned == nil {//if you haven't earned it before
+          earned = run //if is earned
         }
         
+        //determines the speed required to earn the badge
         let earnedSpeed = earned!.distance / Double(earned!.duration)
+        //calculates the actual run speed
         let runSpeed = run.distance / Double(run.duration)
         
+        //determine the level of earning (silver or gold)
         if silver == nil && runSpeed > earnedSpeed * silverMultiplier {
           silver = run
         }
-        
         if gold == nil && runSpeed > earnedSpeed * goldMultiplier {
           gold = run
         }
@@ -77,12 +95,12 @@ struct BadgeStatus {
           if runSpeed > bestSpeed {
             best = run
           }
-        } else {
+        } else { //if you weren't faster than before, put the previous run as the best
           best = run
         }
       }
       
-      return BadgeStatus(badge: badge, earned: earned, silver: silver, gold: gold, best: best)
+      return BadgeStatus(badge: badge, earned: earned, silver: silver, gold: gold, best: best)//return the new badge
     }
   }
 
