@@ -29,9 +29,17 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 import MapKit
 
+//--------------------------------------
+// Class: MulticolorPolyline
+// Purpose: to implement the MKPolyline
+// cocoapod using the custom color black
+//--------------------------------------
 class MulticolorPolyline: MKPolyline {
     var color = UIColor.black
 }
