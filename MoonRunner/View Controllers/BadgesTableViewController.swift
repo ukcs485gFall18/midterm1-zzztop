@@ -102,7 +102,7 @@ extension BadgesTableViewController: SegueHandlerType {
   //--------------------------------------------------------
   // pass BadgeStatus to badgeDetailsVC when badge in BadgeTableVC is tapped
   // Pre: segue and the sender (as an optional)
-  // Post: returns nothing but determines the destination after picking a badge 
+  // Post: returns nothing but determines the destination after picking a badge
   //-------------------------------------------------------
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
@@ -113,11 +113,17 @@ extension BadgesTableViewController: SegueHandlerType {
     }
   }
   
+  //--------------------------------------------------------
+  // shouldPerformSegue
+  //--------------------------------------------------------
+  // Pre: identifier as a string and a sender
+  // Post: returns a Bool
+  //-------------------------------------------------------
   override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-    guard let segue = SegueIdentifier(rawValue: identifier) else { return false }
+    guard let segue = SegueIdentifier(rawValue: identifier) else { return false } //unwraps the optional
     switch segue {
     case .details:
-      guard let cell = sender as? UITableViewCell else { return false }
+      guard let cell = sender as? UITableViewCell else { return false }//make sure that the badge call comes from table
       return cell.accessoryType == .disclosureIndicator
     }
   }

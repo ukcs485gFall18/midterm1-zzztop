@@ -34,9 +34,15 @@
 import UIKit
 
 @UIApplicationMain
+//--------------------------------------
+// Class: AppDelegate
+// Purpose: delegated tasks
+//--------------------------------------
 class AppDelegate: UIResponder, UIApplicationDelegate {
   
+  //private member variable
   var window: UIWindow?
+  
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     UINavigationBar.appearance().tintColor = .white
