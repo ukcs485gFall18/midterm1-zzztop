@@ -45,6 +45,7 @@ class PastRunsViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     // alter navigation title name
     self.navigationItem.title = "Past Runs"
     // alter navigation title color
@@ -59,6 +60,7 @@ class PastRunsViewController: UITableViewController {
     //----------------------------------------------
     //all the stuff for the stats board
     //help from https://stackoverflow.com/questions/24710041/adding-uitextfield-on-uiview-programmatically-swift/32602425
+ 
     let sampleTextField =  UILabel(frame: CGRect(x: 20, y: 10, width: 300, height: 40))
     sampleTextField.text = "Your Running Stats: \n"
     sampleTextField.font = UIFont.systemFont(ofSize: 15)
@@ -66,13 +68,36 @@ class PastRunsViewController: UITableViewController {
     StatsView.addSubview(sampleTextField)
     
     var totalDistance:Double = 0;
-    var totalDuration:Float = 0;
+    var totalDuration:Int16 = 0;
     
     for run in runs{
         totalDistance+=run.distance
-        //totalDuration+=run.duration
+        totalDuration+=run.duration
     }
     
+    //average distance, pace, and duration
+    let aveDistance = totalDistance/Double(runs.count);
+    let aveDuration = Double(totalDuration)/Double(runs.count);
+    let avePace = Double(aveDuration)/(aveDistance*0.000621371);
+    
+    let distText =  UILabel(frame: CGRect(x: 20, y: 40, width: 300, height: 40))
+    distText.text = "Your average distance is: \(FormatDisplay.distance(aveDistance))"
+    distText.font = UIFont.systemFont(ofSize: 15)
+    distText.textColor = UIColor.black
+    StatsView.addSubview(distText)
+    
+    let durText =  UILabel(frame: CGRect(x: 20, y: 70, width: 300, height: 40))
+    durText.text = "Your average duration is: \(String(format: "%.2f", Float(aveDuration) / 60.00)) minutes"
+    durText.font = UIFont.systemFont(ofSize: 15)
+    durText.textColor = UIColor.black
+    StatsView.addSubview(durText)
+    
+    let paceText =  UILabel(frame: CGRect(x: 20, y: 100, width: 300, height: 40))
+    paceText.text = "You average pace is: \(String(format: "%.2f", Float(avePace))) min/mi"
+    paceText.font = UIFont.systemFont(ofSize: 15)
+    paceText.textColor = UIColor.black
+    StatsView.addSubview(paceText)
+  
   }
   
   private func getRuns() -> [Run] {
