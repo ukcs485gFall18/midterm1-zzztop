@@ -34,6 +34,8 @@ import CoreData
 
 class PastRunsViewController: UITableViewController {
   
+  @IBOutlet weak var StatsView: UIView!
+  
   // array for storing runs
   var runs: [Run] = []
   // variable to hold reuse identifier to avoid hard coding the string
@@ -41,7 +43,6 @@ class PastRunsViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     // alter navigation title name
     self.navigationItem.title = "Past Runs"
     // alter navigation title color
@@ -52,6 +53,15 @@ class PastRunsViewController: UITableViewController {
     
     // assign runs in reversed order within 'runs'
     runs = getRuns().reversed()
+    
+    //----------------------------------------------
+    //all the stuff for the stats board
+    //help from https://stackoverflow.com/questions/24710041/adding-uitextfield-on-uiview-programmatically-swift/32602425
+    let sampleTextField =  UILabel(frame: CGRect(x: 20, y: 10, width: 300, height: 40))
+    sampleTextField.text = "Your Running Stats: \n"
+    sampleTextField.font = UIFont.systemFont(ofSize: 15)
+    sampleTextField.textColor = UIColor.black;
+    StatsView.addSubview(sampleTextField)
   }
   
   private func getRuns() -> [Run] {
