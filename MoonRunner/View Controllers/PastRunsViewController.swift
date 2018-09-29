@@ -62,6 +62,15 @@ class PastRunsViewController: UITableViewController {
     sampleTextField.font = UIFont.systemFont(ofSize: 15)
     sampleTextField.textColor = UIColor.black;
     StatsView.addSubview(sampleTextField)
+    
+    var totalDistance:Double = 0;
+    var totalDuration:Float = 0;
+    
+    for run in runs{
+        totalDistance+=run.distance
+        //totalDuration+=run.duration
+    }
+    
   }
   
   private func getRuns() -> [Run] {
