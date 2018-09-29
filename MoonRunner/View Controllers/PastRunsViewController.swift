@@ -32,6 +32,8 @@
 import UIKit
 import CoreData
 
+// this entire view is new functionality done by Jordan George
+
 class PastRunsViewController: UITableViewController {
   
   // array for storing runs
