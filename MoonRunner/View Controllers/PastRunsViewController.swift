@@ -77,9 +77,12 @@ class PastRunsViewController: UITableViewController {
     
     let run = runs[indexPath.row]
     
+    // get duration of individual run
     let duration = run.duration / 60
+    // get distance of individual run
     let distance = Double(run.distance)
     
+    // display distance and duration in each cell for each past run
     cell.textLabel?.text = "\(FormatDisplay.distance(distance)) miles | \(duration) minutes"
     
     return cell
