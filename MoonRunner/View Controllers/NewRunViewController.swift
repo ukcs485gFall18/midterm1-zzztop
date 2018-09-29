@@ -27,7 +27,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 import CoreLocation
 import MapKit

@@ -29,9 +29,12 @@
  * THE SOFTWARE.
  */
 
-//shows details of a badge
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 
+//shows details of a badge
 class BadgeDetailsViewController: UIViewController {
   
   @IBOutlet weak var badgeImageView: UIImageView!

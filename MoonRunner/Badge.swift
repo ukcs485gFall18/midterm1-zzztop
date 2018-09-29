@@ -29,6 +29,9 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import Foundation
 
 //defines properties of a badge

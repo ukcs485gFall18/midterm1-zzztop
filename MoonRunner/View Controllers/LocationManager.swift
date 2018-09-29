@@ -1,3 +1,6 @@
+//-----------------------------
+// All imported resources
+//-----------------------------
 import CoreLocation
 
 class LocationManager {

@@ -29,20 +29,43 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 import CoreData
 
-//displays badges in a table
+
+//--------------------------------------
+// Class: BadgesTableViewController
+// Purpose: displays badges in a table
+//--------------------------------------
 class BadgesTableViewController: UITableViewController {
   
+  //private member variable
   var statusList: [BadgeStatus]!
   
+  //--------------------------------------------------------
+  // viewDidLoad
+  //--------------------------------------------------------
+  // overloading viewdidLoad to get the saved runs
+  // Pre: none
+  // Post: returns nothing but sets the statusList to show
+  // the badges earned
+  //--------------------------------------------------------
   override func viewDidLoad() {
     super.viewDidLoad()
     //when view loads ask get saved runs from Core Data
     statusList = BadgeStatus.badgesEarned(runs: getRuns())
   }
   
+  //--------------------------------------------------------
+  // getRuns
+  //--------------------------------------------------------
+  // Fetches the runs from coreData
+  // Pre: none
+  // Post: returns an array of Runs fetched from CoreData
+  //--------------------------------------------------------
   private func getRuns() -> [Run] {
     let fetchRequest: NSFetchRequest<Run> = Run.fetchRequest() //make request to core data for saved runs
     let sortDescriptor = NSSortDescriptor(key: #keyPath(Run.timestamp), ascending: true) //sort runs by data
@@ -50,7 +73,7 @@ class BadgesTableViewController: UITableViewController {
     do {
       return try CoreDataStack.context.fetch(fetchRequest)
     } catch {
-      return []
+      return [] //return an empty array
     }
   }
 }
@@ -69,11 +92,18 @@ extension BadgesTableViewController {
 }
 
 extension BadgesTableViewController: SegueHandlerType {
+  //giving the segue between views a name
   enum SegueIdentifier: String {
     case details = "BadgeDetailsViewController"
   }
   
-  //pass BadgeStatus to badgeDetailsVC when badge in BadgeTableVC is tapped
+  //--------------------------------------------------------
+  // prepare
+  //--------------------------------------------------------
+  // pass BadgeStatus to badgeDetailsVC when badge in BadgeTableVC is tapped
+  // Pre: segue and the sender (as an optional)
+  // Post: returns nothing but determines the destination after picking a badge 
+  //-------------------------------------------------------
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .details:
