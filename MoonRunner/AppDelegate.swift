@@ -43,7 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   //private member variable
   var window: UIWindow?
   
-  
+  //--------------------------------------------------------
+  // application
+  //--------------------------------------------------------
+  // set up the application especially the UI elements and
+  // locationManager
+  // Pre: all UI elements
+  // Post: return bool
+  //--------------------------------------------------------
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     UINavigationBar.appearance().tintColor = .white
     UINavigationBar.appearance().barTintColor = .black
@@ -52,10 +59,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return true
   }
   
+  //--------------------------------------------------------
+  // applicationDidEnterBackground
+  //--------------------------------------------------------
+  // set up the coreData for usage and saving
+  //--------------------------------------------------------
   func applicationDidEnterBackground(_ application: UIApplication) {
     CoreDataStack.saveContext()
   }
   
+  //--------------------------------------------------------
+  // applicationWillTerminate
+  //--------------------------------------------------------
+  // set up core data to save when the app ends
+  //--------------------------------------------------------
   func applicationWillTerminate(_ application: UIApplication) {
     CoreDataStack.saveContext()
   }
