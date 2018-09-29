@@ -99,4 +99,3 @@ extension UnitSpeed {
     return UnitSpeed(symbol: "min/mi", converter: UnitConverterPace(coefficient: 60.0 / 1609.34))
   }
 }
-

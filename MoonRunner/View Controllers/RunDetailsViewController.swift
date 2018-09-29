@@ -38,10 +38,10 @@ class RunDetailsViewController: UIViewController {
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
   @IBOutlet weak var paceLabel: UILabel!
-    @IBOutlet var badgeImageView: UIImageView!
-    @IBOutlet var badgeInfoButton: UIButton!
+  @IBOutlet var badgeImageView: UIImageView!
+  @IBOutlet var badgeInfoButton: UIButton!
     
-  var run:Run! //create run instance
+  var run: Run! //create run instance
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -65,7 +65,7 @@ class RunDetailsViewController: UIViewController {
       present(alert, animated: true)
   }
 
-//formats all of the details of run and sets them to display
+  //formats all of the details of run and sets them to display
   private func configureView() {
     let distance = Measurement(value: run.distance, unit: UnitLength.meters)
     let seconds = Int(run.duration)

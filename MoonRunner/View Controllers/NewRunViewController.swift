@@ -44,12 +44,11 @@ class NewRunViewController: UIViewController {
   @IBOutlet weak var paceLabel: UILabel!
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var mapContainerView: UIView!
-    @IBOutlet weak var badgeStackView: UIStackView!
-    @IBOutlet weak var badgeImageView: UIImageView!
-    @IBOutlet weak var badgeInfoLabel: UILabel!
+  @IBOutlet weak var badgeStackView: UIStackView!
+  @IBOutlet weak var badgeImageView: UIImageView!
+  @IBOutlet weak var badgeInfoLabel: UILabel!
 
-  
-  private var run:Run? //create Run instance 
+  private var run: Run? // create Run instance
   private let locationManager = LocationManager.shared //object used to start/stop location services
   private var seconds = 0 //tracks duration of run
   private var timer: Timer? //fires each second to update UI
@@ -184,8 +183,6 @@ class NewRunViewController: UIViewController {
     }
   }
 
-
-  
   @IBAction func startTapped() {
     startRun()
   }
