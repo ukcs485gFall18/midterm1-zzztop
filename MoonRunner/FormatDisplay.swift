@@ -66,4 +66,3 @@ struct FormatDisplay {
     return formatter.string(from: timestamp)
   }
 }
-
