@@ -9,8 +9,10 @@ Kyra Seevers
 
 
 Adrienne Corwin
--New Functionality: Added Tips button to home page and added two three new view controllers.
+- New Functionality: Added Tips button to home page and added two three new view controllers.
 1)choose Tip Category - user can choose to view tips on running faster or longer
 2)fasterTips - 9 tips on how to run faster (when you click on a button a longer description of the tip will be revealed
 3)longerTips - 9 tips on how to run for longer, same functionality
--I also completed Part 2 of the tutorial
+- I also completed Part 2 of the tutorial
+
+***Please note that the application runs are simulated using 'City Run' provided by XCode so that the use feels like they are running through Cupertino***
