@@ -30,13 +30,21 @@
  */
 
 //-----------------------------
+// All online resources utilized include:
+// https://stackoverflow.com/questions/31665927/setting-tableview-headers-height-in-swift
+// https://www.ioscreator.com/tutorials/customizing-header-footer-table-view-ios8-swift
+// https://stackoverflow.com/questions/31964941/swift-how-to-make-custom-header-for-uitableview
+//------------------------------
+
+//-----------------------------
 // All imported resources
 //-----------------------------
 import UIKit
 import CoreData
 
-
-//class is new functionality implemented by Jordan George and Kyra Seevers
+//-----------------------------------------------------------------------------
+//This class is new functionality implemented by Jordan George and Kyra Seevers
+//-----------------------------------------------------------------------------
 class PastRunsViewController: UITableViewController {
   
   // array for storing runs
@@ -81,40 +89,57 @@ class PastRunsViewController: UITableViewController {
   }
   
   //completed by Kyra Seevers
+  //------------------------------------------------------
+  // tableView (editing header)
+  //------------------------------------------------------
+  // Purpose: to edit the header cell of the UITableView
+  // and place the cumulative run statistics inside of it
+  // showing above the past runs data!
+  // Pre: the UITableView, the header section
+  // Post: returns the UIView (header Cell)
+  //------------------------------------------------------
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
+    //creating the header cell as a member of the new custom header cell class
     let  headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! StatsHeaderCellTableViewCell
     headerCell.backgroundColor = UIColor.green
 
     var totalDistance:Double = 0;
     var totalDuration:Int16 = 0;
     
+    //accumulating the total statistics
     for run in runs{
       totalDistance+=run.distance
       totalDuration+=run.duration
     }
-    
 
+    //calculating the average distance, duration, and pace with appropriate units
     let aveDistance = totalDistance/Double(runs.count);
     let aveDuration = Double(totalDuration)/Double(runs.count);
     let avePace = Double(aveDuration)/(aveDistance*0.000621371);
     
+    //assigning the information to the display string (ensuring that the label text is set for 4 lines in the storyboard)
     var labelText:String = "Your Running Stats: \n"
-    
     labelText += "Average distance: \(FormatDisplay.distance(aveDistance))\n"
     labelText += "Average duration: \(String(format: "%.2f", Float(aveDuration) / 60.00)) minutes \n"
     labelText += "Average pace: \(String(format: "%.2f", Float(avePace))) min/mi"
-    
-    print(labelText)
-    
     headerCell.statsHeaderLabel.text = labelText
     
+    //return the headerCell to be placed in the UITableView
     return headerCell
   }
   
+  //------------------------------------------------------
+  // tableView (header height)
+  //------------------------------------------------------
+  // Purpose: to lengthen the header height
+  // Pre: the UITableView, the header section
+  // Post: returns the height as a CGFloat
+  //------------------------------------------------------
   //completed by Kyra Seevers
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 100
+    let HeaderHeight:CGFloat = 100
+    return HeaderHeight
   }
   
   //completed by Jordan George

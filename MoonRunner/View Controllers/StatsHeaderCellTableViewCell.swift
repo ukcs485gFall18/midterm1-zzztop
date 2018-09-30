@@ -30,17 +30,22 @@
  */
 
 //-----------------------------
+// All online resources utilized include:
+// https://www.ioscreator.com/tutorials/customizing-header-footer-table-view-ios8-swift
+//-----------------------------
+
+//-----------------------------
 // All imported resources
 //-----------------------------
 import UIKit
 
+//This class is new functionality implemented by Kyra Seevers
 //------------------------------------
 // Class: StatsHeaderCellTableViewCell
 //------------------------------------
 // Purpose: to implement a custom
 // header in the UITableView
 //------------------------------------
-//This class is new functionality implemented by Kyra Seevers
 class StatsHeaderCellTableViewCell: UITableViewCell {
 
   //the label containing the text in the header
