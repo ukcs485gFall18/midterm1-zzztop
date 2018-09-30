@@ -29,6 +29,7 @@
  * THE SOFTWARE.
  */
 
+//Adrienne Corwin
 import Foundation
 
 //defines properties of a badge

@@ -31,14 +31,14 @@
 
 //Adrienne Corwin
 
-import MapKit
+//NEW FUNCTIONALITY
+//has two buttons (Speed and Distance)
+//if user taps Speed button, app displays tip vc on running faster
+//if user taps Distance button, app displays tip vc on running longer
+import UIKit
 
-class BadgeAnnotation: MKPointAnnotation {
-  let imageName: String
-  
-  init(imageName: String) {
-    self.imageName = imageName
-    super.init()
+class ChooseTipCategoryViewController: UIViewController {
+  override func viewDidLoad() {
+    super.viewDidLoad()
   }
 }
-
