@@ -27,9 +27,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 
+//the purpose of this class is simply to be the home screen
 class HomeViewController: UIViewController {
   
   override func viewDidLoad() {

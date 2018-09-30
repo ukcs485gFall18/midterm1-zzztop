@@ -29,11 +29,24 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 
+//------------------------------------
+// Class: StatsHeaderCellTableViewCell
+//------------------------------------
+// Purpose: to implement a custom
+// header in the UITableView
+//------------------------------------
+//This class is new functionality implemented by Kyra Seevers
 class StatsHeaderCellTableViewCell: UITableViewCell {
 
+  //the label containing the text in the header
   @IBOutlet var statsHeaderLabel: UILabel!
+  
+  //default functionality to override the existing cell
   
   override func awakeFromNib() {
         super.awakeFromNib()

@@ -27,12 +27,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 import MapKit
 
+//this is the live run scene controller class
 class RunDetailsViewController: UIViewController {
   
+  //all labels containing info about the run
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var distanceLabel: UILabel!
   @IBOutlet weak var dateLabel: UILabel!
@@ -104,6 +108,8 @@ class RunDetailsViewController: UIViewController {
       let location = location as! Location
       return location.longitude
     }
+    
+    //basically finding the constraints of your location on the map
     
     let maxLat = latitudes.max()!
     let minLat = latitudes.min()!
@@ -216,6 +222,7 @@ class RunDetailsViewController: UIViewController {
     return UIColor(red: red, green: green, blue: blue, alpha: 1)
   }
   
+  //this function sets up the annotations for basge earned, if earned it returns a list of badge annotations
   private func annotations() -> [BadgeAnnotation] {
     var annotations: [BadgeAnnotation] = []
     let badgesEarned = Badge.allBadges.filter { $0.distance < run.distance }
@@ -260,7 +267,7 @@ extension RunDetailsViewController: MKMapViewDelegate {
     renderer.lineWidth = 3
     return renderer
   }
-  
+  //this allows us to see our location on the map and/or the badge earned
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
     guard let annotation = annotation as? BadgeAnnotation else { return nil }
     let reuseID = "checkpoint"

@@ -28,13 +28,18 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 import CoreLocation
 import MapKit
 import AVFoundation
 
+//this is the meat of the application and it is the scene for all new runs
 class NewRunViewController: UIViewController {
   
+  //buttons and labels in the view
   @IBOutlet weak var launchPromptStackView: UIStackView!
   @IBOutlet weak var dataStackView: UIStackView!
   @IBOutlet weak var startButton: UIButton!
@@ -118,7 +123,7 @@ class NewRunViewController: UIViewController {
     distance = Measurement(value: 0, unit: UnitLength.meters)
     locationList.removeAll()
     
-    //shows initial badge to earn??
+    //shows initial badge to earn
     badgeStackView.isHidden = false
     upcomingBadge = Badge.next(for: 0)
     badgeImageView.image = UIImage(named: upcomingBadge.imageName)
