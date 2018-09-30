@@ -29,70 +29,65 @@
  * THE SOFTWARE.
  */
 
-//Adrienne Corwin
-
 import UIKit
 import CoreData
 
-//displays badges in a table
-class BadgesTableViewController: UITableViewController {
+// this entire view is new functionality done by Jordan George
+
+class PastRunsViewController: UITableViewController {
   
-  var statusList: [BadgeStatus]!
+  // array for storing runs
+  var runs: [Run] = []
+  // variable to hold reuse identifier to avoid hard coding the string
+  let reuseID = "Cell"
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    //when view loads ask get saved runs from Core Data
-    statusList = BadgeStatus.badgesEarned(runs: getRuns())
+    
+    // alter navigation title name
+    self.navigationItem.title = "Past Runs"
+    // alter navigation title color
+    self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+    
+    // register tableview
+    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseID)
+    
+    // assign runs in reversed order within 'runs'
+    runs = getRuns().reversed()
   }
   
   private func getRuns() -> [Run] {
-    let fetchRequest: NSFetchRequest<Run> = Run.fetchRequest() //make request to core data for saved runs
-    let sortDescriptor = NSSortDescriptor(key: #keyPath(Run.timestamp), ascending: true) //sort runs by data
+     // make request to core data for saved runs
+    let fetchRequest: NSFetchRequest<Run> = Run.fetchRequest()
+     // sort runs by data
+    let sortDescriptor = NSSortDescriptor(key: #keyPath(Run.timestamp), ascending: true)
     fetchRequest.sortDescriptors = [sortDescriptor]
     do {
+      // get the data
       return try CoreDataStack.context.fetch(fetchRequest)
     } catch {
       return []
     }
   }
-}
-
-//reduces stringly typed code
-extension BadgesTableViewController {
+  
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return statusList.count //returns how many sections table should have
+    return runs.count
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell: BadgeCell = tableView.dequeueReusableCell(for: indexPath)
-    cell.status = statusList[indexPath.row] //set the status corresponding to badge at indexPath.row in table
+    let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath)
+    
+    let run = runs[indexPath.row]
+    
+    // get distance of individual run
+    let distance = FormatDisplay.distance(Double(run.distance))
+    // get duration of individual run
+    let duration = String(format: "%.2f", Float(run.duration) / 60.00)
+    
+    // display distance and duration in each cell for each past run
+    cell.textLabel?.text = "\(distance) miles | \(duration) minutes"
+    
     return cell
   }
-}
-
-extension BadgesTableViewController: SegueHandlerType {
-  enum SegueIdentifier: String {
-    case details = "BadgeDetailsViewController"
-  }
   
-  //pass BadgeStatus to badgeDetailsVC when badge in BadgeTableVC is tapped
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    switch segueIdentifier(for: segue) {
-    case .details:
-      let destination = segue.destination as! BadgeDetailsViewController
-      let indexPath = tableView.indexPathForSelectedRow!
-      destination.status = statusList[indexPath.row] //gets badge status to pass
-    }
-  }
-  
-  override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-    guard let segue = SegueIdentifier(rawValue: identifier) else { return false }
-    switch segue {
-    case .details:
-      guard let cell = sender as? UITableViewCell else { return false }
-      return cell.accessoryType == .disclosureIndicator
-    }
-  }
 }
-
-
