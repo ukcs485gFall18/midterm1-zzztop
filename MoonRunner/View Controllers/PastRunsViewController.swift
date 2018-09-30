@@ -101,7 +101,7 @@ class PastRunsViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
     //creating the header cell as a member of the new custom header cell class
-    let  headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! StatsHeaderCellTableViewCell
+    let headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! StatsHeaderCellTableViewCell
     headerCell.backgroundColor = UIColor.green
 
     var totalDistance:Double = 0;

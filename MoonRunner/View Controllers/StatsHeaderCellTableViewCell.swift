@@ -49,7 +49,7 @@ import UIKit
 class StatsHeaderCellTableViewCell: UITableViewCell {
 
   //the label containing the text in the header
-  @IBOutlet var statsHeaderLabel: UILabel!
+    @IBOutlet var statsHeaderLabel: UILabel!
   
   //default functionality to override the existing cell
   
