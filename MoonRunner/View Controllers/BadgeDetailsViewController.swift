@@ -29,6 +29,9 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 //shows details of a badge
 import UIKit
 

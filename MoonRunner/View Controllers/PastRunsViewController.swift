@@ -29,20 +29,22 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 import CoreData
 
-// this entire view is new functionality done by Jordan George
 
+//class is new functionality implemented by Jordan George and Kyra Seevers
 class PastRunsViewController: UITableViewController {
-  
-  @IBOutlet weak var StatsView: UIView!
   
   // array for storing runs
   var runs: [Run] = []
   // variable to hold reuse identifier to avoid hard coding the string
   let reuseID = "Cell"
   
+  //completed by Jordan
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -56,15 +58,9 @@ class PastRunsViewController: UITableViewController {
     
     // assign runs in reversed order within 'runs'
     runs = getRuns().reversed()
-    
-    //----------------------------------------------
-    //all the stuff for the stats board
-    //help from https://stackoverflow.com/questions/24710041/adding-uitextfield-on-uiview-programmatically-swift/32602425
-
-    
-   
   }
   
+  //completed by Jordan
   private func getRuns() -> [Run] {
      // make request to core data for saved runs
     let fetchRequest: NSFetchRequest<Run> = Run.fetchRequest()
@@ -79,11 +75,14 @@ class PastRunsViewController: UITableViewController {
     }
   }
   
+  //completed by Jordan
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return runs.count
   }
   
+  //completed by Kyra Seevers
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    
     let  headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! StatsHeaderCellTableViewCell
     headerCell.backgroundColor = UIColor.green
 
@@ -95,6 +94,7 @@ class PastRunsViewController: UITableViewController {
       totalDuration+=run.duration
     }
     
+
     let aveDistance = totalDistance/Double(runs.count);
     let aveDuration = Double(totalDuration)/Double(runs.count);
     let avePace = Double(aveDuration)/(aveDistance*0.000621371);
@@ -112,10 +112,12 @@ class PastRunsViewController: UITableViewController {
     return headerCell
   }
   
+  //completed by Kyra Seevers
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 100
   }
   
+  //completed by Jordan George
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath)

@@ -29,6 +29,9 @@
  * THE SOFTWARE.
  */
 
+//-----------------------------
+// All imported resources
+//-----------------------------
 import UIKit
 import CoreData
 
