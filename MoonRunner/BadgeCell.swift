@@ -29,6 +29,7 @@
  * THE SOFTWARE.
  */
 
+//Adrienne Corwin
 
 //custom cell to display badges in a table view
 import UIKit

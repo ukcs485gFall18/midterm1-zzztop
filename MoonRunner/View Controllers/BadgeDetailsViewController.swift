@@ -29,6 +29,8 @@
  * THE SOFTWARE.
  */
 
+//Adrienne Corwin
+
 //shows details of a badge
 import UIKit
 

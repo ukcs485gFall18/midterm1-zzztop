@@ -29,6 +29,8 @@
  * THE SOFTWARE.
  */
 
+
+//Adrienne Corwin
 import Foundation
 
 //structure to store badges when they are earned
