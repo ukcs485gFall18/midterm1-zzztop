@@ -15,4 +15,4 @@ Adrienne Corwin
 3)longerTips - 9 tips on how to run for longer, same functionality
 - I also completed Part 2 of the tutorial
 
-***Please note that the application runs are simulated using 'City Run' provided by XCode so that the use feels like they are running through Cupertino***
+***Please note that the application runs are simulated using 'City Run' provided by XCode so that the use feels like they are running through Cupertino. According to the app tutorial, this is achieved by doing the following: "before pressing the New Run button, select Debug\Location\City Run from the Simulator menu." ***
