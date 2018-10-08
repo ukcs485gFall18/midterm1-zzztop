@@ -14,3 +14,6 @@ Pt2: https://www.raywenderlich.com/552-how-to-make-an-app-like-runkeeper-part-2
 
 
 ***Please note that the application runs are simulated using 'City Run' provided by XCode so that the use feels like they are running through Cupertino. According to the app tutorial, this is achieved by doing the following: "before pressing the New Run button, select Debug\Location\City Run from the Simulator menu."***
+
+
+Team Members: Kyra Seevers, Jordan George, Adrienne Corwin
